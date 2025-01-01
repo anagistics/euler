@@ -5,6 +5,7 @@
 #include <set>
 #include <algorithm>
 #include <numeric>
+#include <ranges>
 
 #include "types.h"
 
@@ -42,11 +43,7 @@ std::vector<u64> primesUpTo2(u64 number)
 std::vector<u64> primeFactors(u64 number)
 {
     if (number <= 3)
-    {
-        if (number <= 1)
-            return {};
-        return {number};
-    }
+        return { number };
 
     std::set<u64> primes{2ull};
     std::vector<u64> factors;
@@ -75,7 +72,27 @@ std::vector<u64> primeFactors(u64 number)
     }
     if (number > 1)
         factors.push_back(number);
+    std::sort(begin(factors), end(factors));
     return factors;
 }
+
+std::set<u64> divisors(u64 number)
+{
+    std::set<u64> divisors;
+    auto pfactors = primeFactors(number);
+    if (pfactors.size() == 0)
+        return divisors;
+
+    for (auto startIt = begin(pfactors); startIt != end(pfactors); ++startIt)
+    {
+        for (auto endIt = startIt; endIt != end(pfactors); ++endIt)
+        {
+            auto divisor = std::accumulate(startIt, std::next(endIt), 1ull, std::multiplies<u64>());
+            divisors.insert(divisor);
+        }
+    }
+    return divisors;
+}
+
 
 #endif

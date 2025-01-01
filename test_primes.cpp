@@ -56,6 +56,31 @@ void TestPrimes()
         std::vector<u64> expected = {2, 61};
         assert(pf == expected);
     }
+    {
+        std::vector<u64> pf = primeFactors(0);
+        std::vector<u64> expected = {0};
+        assert(pf == expected);
+    }
+    {
+        std::vector<u64> pf = primeFactors(1);
+        std::vector<u64> expected = {1};
+        assert(pf == expected);
+    }
+    {
+        std::set<u64> dvs = divisors(6);
+        std::set<u64> expected{2, 3, 6};
+        assert(dvs == expected);
+    }
+    {
+        std::set<u64> dvs = divisors(7);
+        std::set<u64> expected{7};
+        assert(dvs == expected);
+    }
+    {
+        std::set<u64> dvs = divisors(1);
+        std::set<u64> expected{1};
+        assert(dvs == expected);
+    }
 
     std::print("done.\n");
 }

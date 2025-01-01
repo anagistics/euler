@@ -1,10 +1,13 @@
 #include <vector>
 #include <array>
+#include <map>
+#include <set>
 #include <algorithm>
 #include <numeric>
 #include <print>
 #include <ranges>
 #include <chrono>
+#include <functional>
 
 #include "windows.h"
 
@@ -68,24 +71,55 @@ constexpr u64 Problem4_LargestPalindromeProduct()
     return maxPalindrom;
 }
 
+u64 Problem5_SmallestMultiple()
+{
+    std::map<u64, size_t> factors;
+    for (u8 i = 1; i <= 20; ++i)
+    {
+        auto pf = primeFactors(i);
+        std::multiset<u64> pfFreq;
+        std::copy(begin(pf), end(pf), std::inserter(pfFreq, end(pfFreq)));
+        for (u64 elem: pfFreq)
+        {
+            if (factors.find(elem) == end(factors))
+                factors[elem] = 1;
+            factors[elem] = std::max<size_t>(factors[elem], pfFreq.count(elem));
+        }
+    }
+    auto multiMultiplier = [](u64 cum, auto elem)
+    {
+        return cum * pow(elem.first, elem.second);
+    };
+
+    auto prod = std::accumulate(begin(factors), end(factors), 1, multiMultiplier);
+    return prod;
+}
+
 // include test files
 #include "test_primes.cpp"
 #include "test_digits.cpp"
+
+void Run(std::function<void()> tester, std::function<u64()> problem)
+{
+    tester();
+    auto start = std::chrono::high_resolution_clock::now();
+    u64 result = problem();
+    auto end = std::chrono::high_resolution_clock::now();
+    std::print("{0}\n", result);
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    std::print("Execution time: {0}µs.\n", duration.count());
+}
+
 
 int main(int, char**)
 {
     SetConsoleOutputCP(CP_UTF8);
 
-//    TestPrimes();
-    TestDigits();
+    // Problem1_MultiplesOf3Or5();
+    // Problem2_EvenFibonacciNumbers();
+    // Problem3_LargestPrimeFactor();
+    // Problem4_LargestPalindromeProduct();
 
-    auto start = std::chrono::high_resolution_clock::now();
-    // u64 result = Problem1_MultiplesOf3Or5();
-    // u64 result = Problem2_EvenFibonacciNumbers();
-    // u64 result = Problem3_LargestPrimeFactor();
-    u64 result = Problem4_LargestPalindromeProduct();
-    auto end = std::chrono::high_resolution_clock::now();
-    std::print("{0}\n", result);
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    std::print("Execution time: {0}µs.\n", duration.count());
+    Run(TestPrimes, Problem5_SmallestMultiple);
+    //TestDigits();
 }
