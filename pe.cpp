@@ -44,12 +44,8 @@ u64 Problem3_LargestPrimeFactor()
     return *it;
 }
 
-u64 Problem4_LargestPalindromeProduct()
+constexpr u64 Problem4_LargestPalindromeProduct()
 {
-    Factor f1{1,0,0};
-    Factor f2{1,0,0};
-    Number res{0,0,0,0,0,0};
-
     u32 maxPalindrom{0};
     u16 maxN1{0};
     u16 maxN2{0};
@@ -68,7 +64,7 @@ u64 Problem4_LargestPalindromeProduct()
             }
         }
     }
-    std::print("Max palindrom {0}={1} x {2}\n", maxPalindrom, maxN1, maxN2);
+    // if not constexpr: std::print("Max palindrom {0}={1} x {2}\n", maxPalindrom, maxN1, maxN2);
     return maxPalindrom;
 }
 
