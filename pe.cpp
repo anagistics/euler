@@ -86,7 +86,7 @@ u64 Problem5_SmallestMultiple()
             factors[elem] = std::max<size_t>(factors[elem], pfFreq.count(elem));
         }
     }
-    auto multiMultiplier = [](u64 cum, auto elem)
+    auto multiMultiplier = [](u64 cum, auto elem) -> u64
     {
         return cum * pow(elem.first, elem.second);
     };
