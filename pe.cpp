@@ -104,7 +104,8 @@ namespace {
         }
         u64 i{3ull};
         auto divides = [&i](u64 p) -> bool { return i % p == 0; };
-        while (i <= number)
+        u64 limit = static_cast<u64>(floor(sqrt(number)));
+        while (i <= limit)
         {
             auto it = std::find_if(begin(primes), end(primes), divides);
             if (it == end(primes))
@@ -115,9 +116,12 @@ namespace {
                     factors.push_back(i);
                     number = number / i;
                 }
+                limit = static_cast<u64>(floor(sqrt(number)));
             }
             i += 2;
         }
+        if (number > 1)
+            factors.push_back(number);
         return factors;
     }
 }
