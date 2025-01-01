@@ -10,6 +10,7 @@
 
 #include "types.h"
 #include "primes.h"
+#include "digits.h"
 
 u64 Problem1_MultiplesOf3Or5()
 {
@@ -43,19 +44,50 @@ u64 Problem3_LargestPrimeFactor()
     return *it;
 }
 
+u64 Problem4_LargestPalindromeProduct()
+{
+    Factor f1{1,0,0};
+    Factor f2{1,0,0};
+    Number res{0,0,0,0,0,0};
+
+    u32 maxPalindrom{0};
+    u16 maxN1{0};
+    u16 maxN2{0};
+    for (u16 n1 = 999; n1 >= 100; --n1)
+    {
+        for (u16 delta = 0; delta <= n1 - 100; ++delta)
+        {
+            u16 n2 = n1 - delta;
+            u32 prod = n1 * n2;
+            Number n = toNumber(prod);
+            if (isPalindrome(n) && prod > maxPalindrom)
+            {
+                maxPalindrom = prod;
+                maxN1 = n1;
+                maxN2 = n2;
+            }
+        }
+    }
+    std::print("Max palindrom {0}={1} x {2}\n", maxPalindrom, maxN1, maxN2);
+    return maxPalindrom;
+}
+
 // include test files
 #include "test_primes.cpp"
+#include "test_digits.cpp"
 
 int main(int, char**)
 {
     SetConsoleOutputCP(CP_UTF8);
 
-    TestPrimes();
+//    TestPrimes();
+    TestDigits();
 
     auto start = std::chrono::high_resolution_clock::now();
     // u64 result = Problem1_MultiplesOf3Or5();
     // u64 result = Problem2_EvenFibonacciNumbers();
-    u64 result = Problem3_LargestPrimeFactor();
+    // u64 result = Problem3_LargestPrimeFactor();
+    u64 result = Problem4_LargestPalindromeProduct();
     auto end = std::chrono::high_resolution_clock::now();
     std::print("{0}\n", result);
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);

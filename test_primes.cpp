@@ -10,7 +10,7 @@
 
 void TestPrimes()
 {
-    std::print("Starting tests...");
+    std::print("Starting prime tests...");
     {
         auto list = primesUpTo(12ull);
         std::vector<u64> expected = {2,3,5,7,11};
