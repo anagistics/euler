@@ -95,6 +95,19 @@ u64 Problem5_SmallestMultiple()
     return prod;
 }
 
+constexpr u64 Problem6_SumSquareDifference_BruteForce()
+{
+    constexpr u8 limit = 100;
+    constexpr u64 sum = limit * (limit + 1) / 2;
+    constexpr u64 sumSqr = sum * sum;
+
+    u64 soS = 0;
+    for (auto idx : std::ranges::iota_view(1u, limit + 1u))
+      soS += idx * idx;
+    
+    return sumSqr - soS;
+}
+
 // include test files
 #include "test_primes.cpp"
 #include "test_digits.cpp"
@@ -110,6 +123,16 @@ void Run(std::function<void()> tester, std::function<u64()> problem)
     std::print("Execution time: {0}µs.\n", duration.count());
 }
 
+void TestDummy()
+{
+    std::print("no tests.\n");
+}
+
+u64 ProblemDummy()
+{
+    std::print("no problem.\n");
+    return 0;
+}
 
 int main(int, char**)
 {
@@ -119,7 +142,8 @@ int main(int, char**)
     // Problem2_EvenFibonacciNumbers();
     // Problem3_LargestPrimeFactor();
     // Problem4_LargestPalindromeProduct();
+    // Problem5_SmallestMultiple;
 
-    Run(TestPrimes, Problem5_SmallestMultiple);
+    Run(TestDummy, Problem6_SumSquareDifference_BruteForce);
     //TestDigits();
 }
