@@ -8,6 +8,8 @@
 #include <ranges>
 #include <chrono>
 #include <functional>
+#include <utility>
+#include <optional>
 
 #include "windows.h"
 
@@ -108,6 +110,43 @@ constexpr u64 Problem6_SumSquareDifference_BruteForce()
     return sumSqr - soS;
 }
 
+// to do: Change this to concepts to define type traits
+template<typename ArgumentType, typename ResultType, typename GradientType>
+std::optional<ResultType> BinarySearch(ArgumentType initialLow, ArgumentType initialHigh
+, std::function<ResultType(ArgumentType)> operation
+, std::function<GradientType(ResultType)> predicate)
+{
+    ArgumentType low{initialLow};
+    ArgumentType high{initialHigh};
+    
+    while (low < high)
+    {
+        ArgumentType midpoint = (low + high) / 2;
+        ResultType result = operation(midpoint);
+        GradientType diff = predicate(result);
+        if (diff == 0)
+            return std::optional<ResultType>(result);
+        if (diff > 0)
+            high = midpoint + 1;
+        else
+            low = midpoint - 1;
+    }
+    return std::nullopt;
+}
+
+u64 Problem7_10001stPrime()
+{
+    u64 low{1'000}, high{200'000};
+    u64 target = 10'001;
+
+    using SizePrime = std::pair<size_t, u64>;
+    auto operation = [](u64 limit) { auto l = primesUpTo(limit); return std::make_pair<size_t, u64&>(l.size(), l.back()); };
+    auto predicate = [target](SizePrime s) -> i64 { return s.first - target; };
+    
+    auto result = BinarySearch<u64, SizePrime, i64>(low, high, operation, predicate);
+    return result.value().second;
+}
+
 // include test files
 #include "test_primes.cpp"
 #include "test_digits.cpp"
@@ -143,7 +182,8 @@ int main(int, char**)
     // Problem3_LargestPrimeFactor();
     // Problem4_LargestPalindromeProduct();
     // Problem5_SmallestMultiple;
+    // Problem6_SumSquareDifference_BruteForce
 
-    Run(TestDummy, Problem6_SumSquareDifference_BruteForce);
+    Run(TestPrimes, Problem7_10001stPrime);
     //TestDigits();
 }
