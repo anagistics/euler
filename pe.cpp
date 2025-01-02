@@ -141,9 +141,9 @@ u64 Problem7_10001stPrime()
 
     using SizePrime = std::pair<size_t, u64>;
     auto operation = [](u64 limit) { auto l = primesUpTo(limit); return std::make_pair<size_t, u64&>(l.size(), l.back()); };
-    auto predicate = [target](SizePrime s) -> i64 { return s.first - target; };
+    auto gradient = [target](SizePrime s) -> i64 { return s.first - target; };
     
-    auto result = BinarySearch<u64, SizePrime, i64>(low, high, operation, predicate);
+    auto result = BinarySearch<u64, SizePrime, i64>(low, high, operation, gradient);
     return result.value().second;
 }
 
