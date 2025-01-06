@@ -269,19 +269,47 @@ u64 ProblemDummy()
     return 0;
 }
 
+template<int P>
+void Exec()
+{
+    constexpr size_t N = 9u;
+    std::array<std::function<u64()>, N> problems =
+    {
+        Problem1_MultiplesOf3Or5,
+        Problem2_EvenFibonacciNumbers,
+        Problem3_LargestPrimeFactor,
+        Problem4_LargestPalindromeProduct,
+        Problem5_SmallestMultiple,
+        Problem6_SumSquareDifference_BruteForce,
+        Problem7_10001stPrime,
+        Problem8_LargestProductInASeries<2>,
+        Problem9_SpecialPythagoreanTriplet
+    };
+
+    std::function<void()> tester = TestDummy;
+    std::function<u64()> problem;
+
+    if constexpr (P == 3 || P == 5 || P == 7)
+    {
+        tester = TestPrimes;
+        problem = problems[P - 1];
+    }
+    else if constexpr (P == 4)
+    {
+        tester = TestDigits;
+        problem = problems[3];
+    }
+    else
+    {
+        tester = TestDummy;
+        problem = problems[P - 1];
+    }
+    Run(tester, problem);
+}
+
 int main(int, char**)
 {
     SetConsoleOutputCP(CP_UTF8);
 
-    // Problem1_MultiplesOf3Or5();
-    // Problem2_EvenFibonacciNumbers();
-    // Problem3_LargestPrimeFactor();
-    // Problem4_LargestPalindromeProduct();
-    // Problem5_SmallestMultiple;
-    // Problem6_SumSquareDifference_BruteForce
-    // Problem7_10001stPrime
-    // Problem8_LargestProductInASeries<2>
-
-    Run(TestDummy, Problem9_SpecialPythagoreanTriplet);
-    //TestDigits();
+    Exec<9>();
 }
