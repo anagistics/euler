@@ -11,6 +11,9 @@
 #include <utility>
 #include <optional>
 #include <concepts>
+#include <string_view>
+
+#include <cassert>
 
 #include "windows.h"
 
@@ -148,6 +151,50 @@ u64 Problem7_10001stPrime()
     return result.value().second;
 }
 
+constexpr u64 Problem8_LargestProductInASeries()
+{
+    constexpr std::string_view numString{"7316717653133062491922511967442657474235534919493496983520312774506326239578318016984801869478851843858615607891129494954595017379583319528532088055111254069874715852386305071569329096329522744304355766896648950445244523161731856403098711121722383113622298934233803081353362766142828064444866452387493035890729629049156044077239071381051585930796086670172427121883998797908792274921901699720888093776657273330010533678812202354218097512545405947522435258490771167055601360483958644670632441572215539753697817977846174064955149290862569321978468622482839722413756570560574902614079729686524145351004748216637048440319989000889524345065854122758866688116427171479924442928230863465674813919123162824586178664583591245665294765456828489128831426076900422421902267105562632111110937054421750694165896040807198403850962455444362981230987879927244284909188845801561660979191338754992005240636899125607176060588611646710940507754100225698315520005593572972571636269561882670428252483600823257530420752963450"};
+    constexpr size_t windowWidth{ 13u };
+    
+    if (numString.size() < windowWidth)
+        return 0ull;
+    size_t startIdx{ 0u };
+    u64 max{ std::accumulate(begin(numString) + startIdx, begin(numString) + startIdx + windowWidth, 1ull, [](u64 agg, const char c) { return agg * (c - '0');}) };
+    std::string_view argMax{numString.substr(startIdx, windowWidth)};
+    u64 prod{ max };
+    startIdx++;
+    while(startIdx + windowWidth < numString.size())
+    {   
+        while (numString[startIdx] == '0' && startIdx + windowWidth < numString.size())
+            startIdx++;
+        if (startIdx + windowWidth < numString.size())    
+        {
+            prod = numString[startIdx] - '0';
+            size_t idx{ 1u };
+            for (; idx < windowWidth; ++idx)
+            {
+                const char c = numString[startIdx + idx];
+                if (c == '0')
+                {
+                    startIdx += idx;
+                    break;
+                }
+                else
+                    prod *= c - '0';
+            }
+            if (idx == windowWidth && prod > max)
+            {
+                max = prod;
+                argMax = numString.substr(startIdx, windowWidth);
+            }
+
+            startIdx++;
+        }
+    }
+    // std::print("{0} starting at {1}\n", max, argMax);
+    return max;
+}
+
 // include test files
 #include "test_primes.cpp"
 #include "test_digits.cpp"
@@ -184,7 +231,8 @@ int main(int, char**)
     // Problem4_LargestPalindromeProduct();
     // Problem5_SmallestMultiple;
     // Problem6_SumSquareDifference_BruteForce
+    // Problem7_10001stPrime
 
-    Run(TestPrimes, Problem7_10001stPrime);
+    Run(TestDummy, Problem8_LargestProductInASeries);
     //TestDigits();
 }
