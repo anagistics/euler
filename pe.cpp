@@ -223,7 +223,24 @@ u64 Problem8_LargestProductInASeries()
 
 u64 Problem9_SpecialPythagoreanTriplet()
 {
-    
+    std::tuple<u32, u32, u32> solution;
+    constexpr u32 sum{ 1'000u };
+    for (u32 c = sum - 2u; c > 2u; --c)
+    {
+        const u32 ab = sum - c;
+        for (u32 b = 1u; b < ab; ++b)
+        {
+            const u32 a = ab - b;
+            const u32 c2 = a*a + b*b;
+            if (c * c == c2)
+            {
+                solution = std::make_tuple(a, b, c);
+                std::print("{0}**2 + {1}**2 = {2}**2, a*b*c={3}\n", a, b, c, a * b * c);
+                return std::get<0>(solution) * std::get<1>(solution) * std::get<2>(solution);
+            }        
+        }
+    }
+    return 0u;
 }
 
 // include test files
