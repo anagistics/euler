@@ -10,6 +10,7 @@
 #include <functional>
 #include <utility>
 #include <optional>
+#include <concepts>
 
 #include "windows.h"
 
@@ -110,8 +111,8 @@ constexpr u64 Problem6_SumSquareDifference_BruteForce()
     return sumSqr - soS;
 }
 
-// to do: Change this to concepts to define type traits
 template<typename ArgumentType, typename ResultType, typename GradientType>
+requires std::integral<ArgumentType> && std::integral<GradientType>
 std::optional<ResultType> BinarySearch(ArgumentType initialLow, ArgumentType initialHigh
 , std::function<ResultType(ArgumentType)> operation
 , std::function<GradientType(ResultType)> predicate)
@@ -140,7 +141,7 @@ u64 Problem7_10001stPrime()
     u64 target = 10'001;
 
     using SizePrime = std::pair<size_t, u64>;
-    auto operation = [](u64 limit) { auto l = primesUpTo(limit); return std::make_pair<size_t, u64&>(l.size(), l.back()); };
+    auto operation = [](u64 limit) -> SizePrime { auto l = primesUpTo(limit); return std::make_pair<size_t, u64&>(l.size(), l.back()); };
     auto gradient = [target](SizePrime s) -> i64 { return s.first - target; };
     
     auto result = BinarySearch<u64, SizePrime, i64>(low, high, operation, gradient);
