@@ -27,7 +27,9 @@ std::vector<u64> primesUpTo(u64 limit)
 
 std::vector<u64> primesUpTo2(u64 number)
 {
-    std::vector<u64> primesSoFar = {2};
+    std::vector<u64> primesSoFar;
+    primesSoFar.reserve(static_cast<size_t>(ceil(number / log(number))));
+    primesSoFar.push_back(2);
     u64 i{3};
     auto divides = [&i](u64 p) -> bool { return i % p == 0;};
     while (i <= number)
