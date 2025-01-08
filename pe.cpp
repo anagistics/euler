@@ -243,6 +243,15 @@ u64 Problem9_SpecialPythagoreanTriplet()
     return 0u;
 }
 
+u64 Problem10_SummationOfPrimes()
+{
+    u64 upto = 2'000'000ull;
+
+    auto collection = primesUpTo2(upto);
+    u64 sum = std::accumulate(begin(collection), end(collection), 0ull);
+    return sum;
+}
+
 // include test files
 #include "test_primes.cpp"
 #include "test_digits.cpp"
@@ -272,7 +281,7 @@ u64 ProblemDummy()
 template<int P>
 void Exec()
 {
-    constexpr size_t N = 9u;
+    constexpr size_t N = 10u;
     std::array<std::function<u64()>, N> problems =
     {
         Problem1_MultiplesOf3Or5,
@@ -283,13 +292,14 @@ void Exec()
         Problem6_SumSquareDifference_BruteForce,
         Problem7_10001stPrime,
         Problem8_LargestProductInASeries<2>,
-        Problem9_SpecialPythagoreanTriplet
+        Problem9_SpecialPythagoreanTriplet,
+        Problem10_SummationOfPrimes
     };
 
     std::function<void()> tester = TestDummy;
     std::function<u64()> problem;
 
-    if constexpr (P == 3 || P == 5 || P == 7)
+    if constexpr (P == 3 || P == 5 || P == 7 || P == 10)
     {
         tester = TestPrimes;
         problem = problems[P - 1];
@@ -311,5 +321,5 @@ int main(int, char**)
 {
     SetConsoleOutputCP(CP_UTF8);
 
-    Exec<9>();
+    Exec<10>();
 }
