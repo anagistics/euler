@@ -10,59 +10,67 @@
 
 void TestPrimes()
 {
+    auto primeFunc = primesUpTo3;
     std::print("Starting prime tests...");
     {
-        auto list = primesUpTo(12ull);
+        auto list = primeFunc(12ull);
         std::vector<u64> expected = {2,3,5,7,11};
         assert(list == expected);
     }
     {
-        auto list = primesUpTo(7ull);
+        auto list = primeFunc(7ull);
         std::vector<u64> expected = {2,3,5,7};
         assert(list == expected);
     }
     {
-        std::vector<u64> pf = primeFactors(2);
+        std::vector<u64> pf = primeFunc(2);
         std::vector<u64> expected = {2};
         assert(pf == expected);
     }
     {
-        std::vector<u64> pf = primeFactors(4);
-        std::vector<u64> expected = {2, 2};
-        assert(pf == expected);
-    }
-    {
-        std::vector<u64> pf = primeFactors(6);
+        std::vector<u64> pf = primeFunc(4);
         std::vector<u64> expected = {2, 3};
         assert(pf == expected);
     }
     {
-        std::vector<u64> pf = primeFactors(31);
+        std::vector<u64> pf = primeFunc(15);
+        std::vector<u64> expected = {2, 3, 5, 7, 11, 13};
+        assert(pf == expected);
+    }
+    // test of prime factors
+    primeFunc = primeFactors;
+    {
+        std::vector<u64> pf = primeFunc(4);
+        std::vector<u64> expected = {2, 2};
+        assert(pf == expected);
+    }
+    {
+        std::vector<u64> pf = primeFunc(31);
         std::vector<u64> expected = {31};
         assert(pf == expected);
     }
     {
-        std::vector<u64> pf = primeFactors(35);
+        std::vector<u64> pf = primeFunc(35);
         std::vector<u64> expected = {5, 7};
         assert(pf == expected);
     }
     {
-        std::vector<u64> pf = primeFactors(143);
+        std::vector<u64> pf = primeFunc(143);
         std::vector<u64> expected = {11, 13};
         assert(pf == expected);
     }
     {
-        std::vector<u64> pf = primeFactors(2 * 61);
+        std::vector<u64> pf = primeFunc(2 * 61);
         std::vector<u64> expected = {2, 61};
         assert(pf == expected);
     }
     {
-        std::vector<u64> pf = primeFactors(0);
+        std::vector<u64> pf = primeFunc(0);
         std::vector<u64> expected = {0};
         assert(pf == expected);
     }
     {
-        std::vector<u64> pf = primeFactors(1);
+        std::vector<u64> pf = primeFunc(1);
         std::vector<u64> expected = {1};
         assert(pf == expected);
     }

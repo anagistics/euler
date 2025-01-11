@@ -247,7 +247,7 @@ u64 Problem10_SummationOfPrimes()
 {
     u64 upto = 2'000'000ull;
 
-    auto collection = primesUpTo2(upto);
+    auto collection = primesUpTo3(upto);
     u64 sum = std::accumulate(begin(collection), end(collection), 0ull);
     return sum;
 }

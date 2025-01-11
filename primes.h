@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <numeric>
 #include <ranges>
+#include <bitset>
 
 #include "types.h"
 
@@ -23,6 +24,39 @@ std::vector<u64> primesUpTo(u64 limit)
         it++;
     }
     return primes;
+}
+
+std::vector<u64> primesUpTo3(u64 limit)
+{
+    constexpr u64 tableSize { 2'000'000ull };
+    std::bitset<tableSize> primes; // all numbers incl the even ones. By default false
+    primes[2u - 1u] = true;  // 2 is a prime
+    for (u64 cand = 3ull; cand <= limit; cand += 2ull)   // check only the odds
+    {
+        const u64 lim = static_cast<u64>(ceil(sqrt(cand)));
+        size_t p = 3u;
+        bool isPrime = true;
+        while (p <= lim)
+        {  
+            while (p < lim && !primes[p - 1u])      // search for next prime
+                p += 2;       
+            if (cand % p == 0)
+            {
+                isPrime = false;
+                break;
+            }
+            else
+                p += 2;
+        }
+        if (isPrime)
+            primes[cand - 1u] = true; 
+    }
+    std::vector<u64> primeInts;
+    primeInts.push_back(2ull);
+    for(size_t pIdx = 2u; pIdx < tableSize; ++pIdx)
+        if (primes[pIdx])
+          primeInts.push_back(pIdx + 1u);
+    return primeInts;
 }
 
 std::vector<u64> primesUpTo2(u64 number)
