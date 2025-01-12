@@ -10,8 +10,13 @@
 
 void TestPrimes()
 {
-    auto primeFunc = primesUpTo3;
+    auto primeFunc = primesUpTo;
     std::print("Starting prime tests...");
+    {
+        std::vector<u64> pf = primeFunc(15);
+        std::vector<u64> expected = {2, 3, 5, 7, 11, 13};
+        assert(pf == expected);
+    }
     {
         auto list = primeFunc(12ull);
         std::vector<u64> expected = {2,3,5,7,11};
@@ -30,11 +35,6 @@ void TestPrimes()
     {
         std::vector<u64> pf = primeFunc(4);
         std::vector<u64> expected = {2, 3};
-        assert(pf == expected);
-    }
-    {
-        std::vector<u64> pf = primeFunc(15);
-        std::vector<u64> expected = {2, 3, 5, 7, 11, 13};
         assert(pf == expected);
     }
     // test of prime factors
