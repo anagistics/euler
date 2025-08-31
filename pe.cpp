@@ -15,7 +15,7 @@
 
 #include <cassert>
 
-#include "windows.h"
+// #include "windows.h"
 
 #include "types.h"
 #include "primes.h"
@@ -319,7 +319,7 @@ void Exec()
 
 int main(int, char**)
 {
-    SetConsoleOutputCP(CP_UTF8);
+    // SetConsoleOutputCP(CP_UTF8);
 
     Exec<10>();
 }

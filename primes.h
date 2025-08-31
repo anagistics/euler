@@ -8,6 +8,7 @@
 #include <numeric>
 #include <ranges>
 #include <bitset>
+#include <cmath>
 
 #include "types.h"
 
